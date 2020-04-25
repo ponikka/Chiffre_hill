@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def create_the_matrix(matrix, factor_2):
     main_matrix = []
     for i in matrix:
@@ -53,8 +52,18 @@ def create_finall_matrix(matrix, _mod):
     return fnl_matrix
 
 
-def decryption(word, _mod):
-    word_array = np.array(word)
+def decryption(word, key, dict_alphabet):
+    _mod = len(dict_alphabet)
+    matrix_list = [[None] * len(word) for i in range(len(key) // len(word))]
+    word_list = [dict_alphabet[word[x]] for x in range(len(word))]
+
+    count = 0
+    for i in range(len(matrix_list)):
+        for j in range(len(matrix_list[0])):
+            matrix_list[i][j] = dict_alphabet[key[count]]
+            count += 1
+
+    word_array = np.array(matrix_list)
     inv_matrix = np.linalg.inv(word_array)
     det = int(np.linalg.det(word_array))
     main_matrix = create_the_matrix(inv_matrix, det)
@@ -80,5 +89,24 @@ def decryption(word, _mod):
     r_m = np.matrix.transpose(r_m)
 
     fnl_matrix = create_finall_matrix(r_m, _mod)
-    return fnl_matrix
+    result_list = list()
+
+    for i in range(len(fnl_matrix)):
+        sum = 0
+        for j in range(len(fnl_matrix[0])):
+            sum += (fnl_matrix[i][j] * word_list[j])
+            sum = sum % 26
+
+        result_list.append(sum)
+
+    result_letter = list()
+
+    for i in result_list:
+        for key in dict_alphabet:
+            if dict_alphabet[key] == i:
+                result_letter.append(key)
+
+    result = ''.join(result_letter)
+
+    return result
 
