@@ -9,7 +9,7 @@ alphabet = {chr(key): value for value, key in enumerate(range(letter, letter + 2
 def encrypt(word, key, _alphabet = alphabet):
     text = encryption(word, key, _alphabet)
     lavl = Label(text=f'Зашифрованное слово:\n{text.upper()}')
-    lavl.place(height=25, width=150, x=125, y=140)
+    lavl.place(height=25, width=150, x=230, y=140)
 
 def decrypt(word, key, _alphabet=alphabet):
     text = decryption(word,key, _alphabet)
